@@ -3,5 +3,5 @@
     | View Receipts
   a href='#'
     | Edit business info
-.entry
-  input type="text" placeholder="Scan an item or enter price..." autofocus=true
+= form_tag({controller: "transaction", action: "new"}, class: "entry")
+  input.data name='data' type="text" placeholder="Scan an item or enter price..." autofocus=true

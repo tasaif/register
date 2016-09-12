@@ -1,13 +1,9 @@
 $ ->
-  $('.entry input').on 'keyup', (ev) ->
-    key = ev.keyCode
-    ENTER_KEY = 13
-    if (key == ENTER_KEY)
-      money_pattern = /^\d.*\.\d{2}$/
-      entry = ev.target.value.trim()
-      if (money_pattern.test(entry))
-        console.log 'create item'
-      else if (entry.length == 12)
-        console.log "barcode: #{entry}"
-      else
-        console.log 'show error'
+  $('form.entry').on 'submit', (ev) ->
+    entry = $(ev.target).find('input.data').val().trim()
+    money_pattern = /^\d.*\.\d{2}$/
+    if (money_pattern.test(entry))
+      console.log "dollar_amount"
+    else
+      console.log "barcode: #{entry}"
+    return true
