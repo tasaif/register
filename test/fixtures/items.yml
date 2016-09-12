@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  price: 9.99
+  tax: false
+  pp: false
+  name: MyString
+
+two:
+  code: MyString
+  price: 9.99
+  tax: false
+  pp: false
+  name: MyString
