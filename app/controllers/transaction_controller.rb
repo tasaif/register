@@ -8,8 +8,11 @@ class TransactionController < ApplicationController
     else
       @code = data
       @inventory = Inventory.first
-      binding.pry
-      render 'scanned_item'
+      if (@inventory.items.where(code: @code).count == 0)
+        redirect_to controller: 'items', action: 'new', code: @code, receipt_id: @receipt.id
+      else
+        render 'add_item'
+      end
     end
   end
 end

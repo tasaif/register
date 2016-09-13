@@ -1,0 +1,12 @@
+= form_for @item do |f|
+  input hidden=true name="receipt_id" value="#{@receipt_id}"
+  input hidden=true name="code" value="#{@code}"
+  .price
+    | Price
+    = f.text_field :price, autofocus: true
+  .tax
+    | Tax
+    = f.check_box :tax
+  .pp
+    | Per pound
+    = f.check_box :pp
