@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   root 'root#neutral'
-  post 'transaction/new' => 'transaction#new'
-  resources :items
+  post 'add_item' => 'root#add_item'
+  post 'new_receipt' => 'root#new_receipt'
+  post 'create_item' => 'root#create_item'
+  #post 'transaction/new' => 'transaction#new'
+  #resources :items
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

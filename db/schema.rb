@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160912004704) do
   end
 
   create_table "items", force: :cascade do |t|
-    t.string   "code"
+    t.string   "barcode"
     t.decimal  "price"
     t.boolean  "tax"
     t.boolean  "pp"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20160912004704) do
 
   create_table "receipts", force: :cascade do |t|
     t.date     "pd"
+    t.integer  "items",                   array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

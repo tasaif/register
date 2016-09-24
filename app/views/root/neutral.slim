@@ -1,7 +1,29 @@
-.links
-  a href='#'
-    | View Receipts
-  a href='#'
-    | Edit business info
-= form_tag({controller: "transaction", action: "new"}, class: "entry")
-  input.data name='data' type="text" placeholder="Scan an item or enter price..." autofocus=true
+.left
+  .scancode
+    form action="add_item"
+      input name="authenticity_token" value="#{form_authenticity_token}" hidden=true
+      input.source name="source" value="barcode" hidden=true
+      input type="text" name="barcode" value="1234"
+      input type="submit"
+    = render "new_item"
+
+  /.manual
+    - if !@receipt.nil?
+      = form_for @receipt do |receipt|
+        | Add price to existing receipt
+    - else
+      form action="new_receipt" method="post"
+        input.source name="source" value="manual" hidden=true
+        input type="text" name="manual"
+  .other
+    button
+      | Other
+.right
+  .header
+    | List of items
+  .receipt
+    - if @receipt.nil?
+      | Scan or enter an item to create a new receipt
+    - else
+      = form_for @receipt do |receipt|
+        | These are the items

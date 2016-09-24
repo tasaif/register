@@ -1,7 +1,7 @@
 class CreateItems < ActiveRecord::Migration
   def change
     create_table :items do |t|
-      t.string :code
+      t.string :barcode
       t.decimal :price
       t.boolean :tax
       t.boolean :pp

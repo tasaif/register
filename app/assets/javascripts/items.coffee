@@ -1,5 +1,5 @@
 $ ->
-  $('input').get(1).focus()
+  #$('input').get(1).focus()
   $('form#new_item input').on 'keydown', (ev) ->
     key = ev.keyCode
     ENTER = 13
