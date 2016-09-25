@@ -1,29 +1,13 @@
 .left
   .scancode
-    form action="add_item"
-      input name="authenticity_token" value="#{form_authenticity_token}" hidden=true
-      input.source name="source" value="barcode" hidden=true
-      input type="text" name="barcode" value="1234"
-      input type="submit"
-    = render "new_item"
-
-  /.manual
-    - if !@receipt.nil?
-      = form_for @receipt do |receipt|
-        | Add price to existing receipt
-    - else
-      form action="new_receipt" method="post"
-        input.source name="source" value="manual" hidden=true
-        input type="text" name="manual"
+    = render "add_item", implicit_receipt: true
+    = render "new_item", hidden: true
+    = render "manual_item"
   .other
     button
       | Other
 .right
   .header
-    | List of items
+    | Receipt
   .receipt
-    - if @receipt.nil?
-      | Scan or enter an item to create a new receipt
-    - else
-      = form_for @receipt do |receipt|
-        | These are the items
+    = render "line_items", receipt: @receipt

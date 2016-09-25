@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   post 'add_item' => 'root#add_item'
   post 'new_receipt' => 'root#new_receipt'
   post 'create_item' => 'root#create_item'
+  post 'update_receipt_display' => 'root#update_receipt_display'
+  #get 'display_line_items/:receipt_id' => 'root#display_line_items'
   #post 'transaction/new' => 'transaction#new'
   #resources :items
   # The priority is based upon order of creation: first created -> highest priority.

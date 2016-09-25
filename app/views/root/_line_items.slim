@@ -1,0 +1,26 @@
+form action='receipt_display' method='post'
+  input name="authenticity_token" value="#{form_authenticity_token}" hidden=true
+  input name="receipt_id" value=@receipt hidden=true
+  - if @receipt.nil?
+    | Scan or enter an item to create a new receipt
+  - else
+    .line-items
+      .line-item-header
+        span.barcode
+          | Barcode
+        span.tax
+          | Tax
+        span.price
+          | Price
+        span.cost
+          | Cost
+      - @receipt.line_items.each do |line_item|
+        .line-item
+          span.barcode
+            = line_item.barcode
+          span.tax
+            = line_item.tax
+          span.price
+            = line_item.price
+          span.cost
+            = line_item.cost

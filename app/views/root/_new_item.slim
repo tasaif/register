@@ -1,10 +1,20 @@
-form action='create_item' method='post'
+- hidden |= false
+form action='create_item' method='post' hidden="#{hidden}"
   input name="authenticity_token" value="#{form_authenticity_token}" hidden=true
-  input name="barcode" value=@barcode
-  input name="price" placeholder="Price" value="12.34"
-  input type="checkbox" name="tax" value="true" checked=true
-  | Tax
-  input type="checkbox" name="pp" value="true" checked=true
-  | Per Pound
-  input name="weight" value="12.34"
+  input name="receipt_id" value=@receipt hidden=true
+  .barcode
+    | Barcode
+    input name="barcode" value=@barcode
+  .price
+    | Price
+    input name="price" placeholder="Price" value="12.34"
+  .tax
+    input type="checkbox" name="tax" value="true" checked=true
+    | Tax
+  .pp
+    input type="checkbox" name="pp" value="true" checked=true
+    | Per Pound
+  .weight
+    | Weight
+    input name="weight" value="12.34"
   input type="submit"

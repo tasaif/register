@@ -1,0 +1,8 @@
+/.manual
+  - if !@receipt.nil?
+    = form_for @receipt do |receipt|
+      | Add price to existing receipt
+  - else
+    form action="new_receipt" method="post"
+      input.source name="source" value="manual" hidden=true
+      input type="text" name="manual"

@@ -1,0 +1,7 @@
+form action="add_item"
+  input name="authenticity_token" value="#{form_authenticity_token}" hidden=true
+  input name="receipt_id" value=@receipt hidden=true
+  input name="implicit_receipt" value="#{implicit_receipt}" hidden=true
+  input.source name="source" value="barcode" hidden=true
+  input type="text" name="barcode" value="1234"
+  input type="submit"

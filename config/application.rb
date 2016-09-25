@@ -22,5 +22,6 @@ module Register
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.sales_tax = ENV['sales_tax'].to_f / 100
   end
 end
