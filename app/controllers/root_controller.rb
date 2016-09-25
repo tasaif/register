@@ -20,22 +20,40 @@ class RootController < ApplicationController
     should_create_receipt = params['implicit_receipt'] == 'true'
     response = {}
     if source == "barcode"
+      # If this is a known item respond with the known item otherwise give a template for the new one
       @barcode = params['barcode']
       @item = Item.where(barcode: @barcode).first
-      response['item'] = (if @item.nil? then Item.new(barcode: @barcode) else @item end)
-    end
-    if @receipt.nil?
-      if should_create_receipt and !@item.nil?
-        @receipt = Receipt.create
+
+      # Neither the item nor the receipt exist
+      if @item.nil? and @receipt.nil?
+        response['item'] = Item.new(barcode: @barcode)
+        response['receipt'] = Receipt.new
+
+      # The item doesn't exist, but the receipt does
+      elsif @item.nil? and !@receipt.nil?
+        response['item'] = Item.new(barcode: @barcode)
+        response['receipt'] = @receipt
+
+      # The item exists, but a receipt doesn't
+      elsif !@item.nil? and @receipt.nil?
+        response['item'] = @item
+        if should_create_receipt
+          @receipt = Receipt.create
+          @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
+          response['receipt'] = @receipt
+        else
+          response['receipt'] = Receipt.new
+        end
+
+      # The item exists, and the receipt exists
+      elsif !@item.nil? and !@receipt.nil?
+        response['item'] = @item
         response['receipt'] = @receipt
         @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
-      else
-        response['receipt'] = Receipt.new
       end
-    else
-      response['receipt'] = @receipt
+
+      render json: response
     end
-    render json: response
   end
   def create_item
     receipt_id = (if params['receipt_id'] == '' then nil else params['receipt_id'].to_i end)

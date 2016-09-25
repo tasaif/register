@@ -3,8 +3,18 @@ $ ->
   if ($("body[data-action='neutral'][data-controller='root']").length == 0)
     return
 
-  update_receipt_display = (receipt_id) ->
-    $form = $("form[action='receipt_display']").first()
+  set_receipt_id_callback = (ev, receipt_id) ->
+    $container = $(@)
+    $receipt_id_inputs = $container.find("input[name='receipt_id']")
+    $receipt_id_inputs.val(receipt_id)
+
+  set_scan_display_callback = (ev, selector) ->
+    $container = $(@)
+    $container.children().hide()
+    $container.find(selector).show()
+
+  update_receipt_callback = (ev, receipt_id) ->
+    $form = $("[action='receipt_display']")
     $receipt_input = $form.find("input[name='receipt_id']")
     $receipt_input.val receipt_id
     data = $form.serialize()
@@ -35,7 +45,8 @@ $ ->
       data: data
       context: $form
       success: (data, textStatus, jqXHR) ->
-        update_receipt_display data.receipt.id
+        @trigger 'set_scan_display', "[action='add_item']"
+        @trigger 'update_receipt_display', data.receipt.id
         #$new_item_form = $(data)
         #console.log data
         #console.log textStatus
@@ -60,14 +71,13 @@ $ ->
         success: (data, textStatus, jqXHR) ->
           receipt = data.receipt
           item = data.item
-          add_item_form = $("form[action='add_item']")
           create_item_form = $("form[action='create_item']")
           if (item.id == null)
             create_item_form.find("input[name='barcode']").val(item.barcode)
-            add_item_form.hide()
-            create_item_form.show()
+            $("div.scancode").trigger 'set_scan_display', "[action='create_item']"
           else
-            update_receipt_display receipt.id
+            @trigger 'set_receipt_id', receipt.id
+            @trigger 'update_receipt_display', receipt.id
           #console.log data
           #console.log textStatus
           #console.log jqXHR
@@ -79,3 +89,6 @@ $ ->
 
   $("form[action='add_item']").on 'submit', add_item_submit_callback
   $("form[action='create_item']").on 'submit', create_item_submit_callback
+  $("div.scancode").on 'update_receipt_display', update_receipt_callback
+  $("div.scancode").on 'set_scan_display', set_scan_display_callback
+  $("div.scancode").on 'set_receipt_id', set_receipt_id_callback
