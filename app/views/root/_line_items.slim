@@ -20,10 +20,10 @@ form action='receipt_display' method='post'
       - @receipt.line_items.each do |line_item|
         .line-item
           span.barcode
-            = line_item.barcode
+            = line_item.barcode_pretty
           span.tax
-            = line_item.tax
+            = line_item.tax_pretty
           span.price
-            = line_item.price
+            = line_item.price_pretty
           span.cost
-            = line_item.cost
+            = line_item.cost_pretty

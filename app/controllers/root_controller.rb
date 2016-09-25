@@ -40,6 +40,7 @@ class RootController < ApplicationController
         if should_create_receipt
           @receipt = Receipt.create
           @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
+          @item.stamp @line_item
           response['receipt'] = @receipt
         else
           response['receipt'] = Receipt.new
@@ -67,6 +68,7 @@ class RootController < ApplicationController
     pp = params['pp']
     @item = Item.create barcode: barcode, price: price, tax: tax, pp: pp
     @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
+    @item.stamp @line_item
     @receipt.line_items.push @line_item
     resp = {receipt: @receipt, item: @item, line_item: @line_item, line_items: @receipt.lines_to_items}
     render json: resp

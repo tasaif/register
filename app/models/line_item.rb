@@ -7,7 +7,7 @@ class LineItem < ActiveRecord::Base
   end
   def tax
     if item.tax
-      Rails.application.config.sales_tax * item.price
+      (Rails.application.config.sales_tax * item.price).round(2)
     else
       0.0
     end
@@ -16,6 +16,19 @@ class LineItem < ActiveRecord::Base
     item.price
   end
   def cost
-    price + price * tax
+    (price + price * tax).round(2)
+  end
+
+  def barcode_pretty
+    item.barcode
+  end
+  def tax_pretty
+    "%.2f" % tax
+  end
+  def price_pretty
+    "%.2f" % price
+  end
+  def cost_pretty
+    "%.2f" % cost
   end
 end

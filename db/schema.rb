@@ -37,6 +37,12 @@ ActiveRecord::Schema.define(version: 20160925013410) do
   create_table "line_items", force: :cascade do |t|
     t.integer  "item_id"
     t.integer  "receipt_id"
+    t.string   "barcode"
+    t.decimal  "price"
+    t.boolean  "tax"
+    t.boolean  "pp"
+    t.string   "name"
+    t.decimal  "weight"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
