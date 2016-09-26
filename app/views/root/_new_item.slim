@@ -12,9 +12,9 @@ form action='create_item' method='post' hidden="#{hidden}"
     input type="checkbox" name="tax" value="true" checked=true
     | Tax
   .pp
-    input type="checkbox" name="pp" value="true" checked=true
+    input type="checkbox" name="pp" value="true" checked=false
     | Per Pound
-  .weight
+  .weight hidden=true
     | Weight
     input name="weight" value="12.34"
   input type="submit"

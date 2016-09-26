@@ -15,6 +15,8 @@ form action='receipt_display' method='post'
           | Tax
         span.price
           | Price
+        span.weight
+          | Weight
         span.cost
           | Cost
       - @receipt.line_items.each do |line_item|
@@ -25,5 +27,7 @@ form action='receipt_display' method='post'
             = line_item.tax_pretty
           span.price
             = line_item.price_pretty
+          span.weight
+            = line_item.weight_pretty
           span.cost
             = line_item.cost_pretty

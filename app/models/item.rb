@@ -7,5 +7,6 @@ class Item < ActiveRecord::Base
     line_item.tax = self.tax
     line_item.pp = self.pp
     line_item.name = self.name
+    line_item.save
   end
 end

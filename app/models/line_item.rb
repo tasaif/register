@@ -26,7 +26,16 @@ class LineItem < ActiveRecord::Base
     "%.2f" % tax
   end
   def price_pretty
-    "%.2f" % price
+    retval = "%.2f" % price
+    retval = "#{retval}/lb" if pp
+    retval
+  end
+  def weight_pretty
+    if pp
+      weight
+    else
+      return ""
+    end
   end
   def cost_pretty
     "%.2f" % cost

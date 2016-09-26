@@ -18,6 +18,7 @@ class RootController < ApplicationController
     receipt_id = (if params['receipt_id'] == '' then nil else params['receipt_id'].to_i end)
     @receipt = Receipt.where(id: receipt_id).first
     should_create_receipt = params['implicit_receipt'] == 'true'
+    weight = params['weight'].to_f
     response = {}
     if source == "barcode"
       # If this is a known item respond with the known item otherwise give a template for the new one
@@ -37,9 +38,11 @@ class RootController < ApplicationController
       # The item exists, but a receipt doesn't
       elsif !@item.nil? and @receipt.nil?
         response['item'] = @item
-        if should_create_receipt
+        if @item.pp and params['weight'].nil?
+          response['weight_requested'] = true
+        elsif should_create_receipt
           @receipt = Receipt.create
-          @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
+          @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id, weight: weight)
           @item.stamp @line_item
           response['receipt'] = @receipt
         else
@@ -49,8 +52,13 @@ class RootController < ApplicationController
       # The item exists, and the receipt exists
       elsif !@item.nil? and !@receipt.nil?
         response['item'] = @item
-        response['receipt'] = @receipt
-        @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
+        if @item.pp and params['weight'].nil?
+          response['weight_requested'] = true
+        else
+          response['receipt'] = @receipt
+          @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id, weight: weight)
+          @item.stamp(@line_item)
+        end
       end
 
       render json: response
@@ -64,11 +72,13 @@ class RootController < ApplicationController
     end
     barcode = params['barcode']
     price = params['price'].to_f
+    weight = params['weight'].to_f
     tax = params['tax']
     pp = params['pp']
     @item = Item.create barcode: barcode, price: price, tax: tax, pp: pp
     @line_item = LineItem.create(item_id: @item.id, receipt_id: @receipt.id)
     @item.stamp @line_item
+    @line_item.weight = weight if pp
     @receipt.line_items.push @line_item
     resp = {receipt: @receipt, item: @item, line_item: @line_item, line_items: @receipt.lines_to_items}
     render json: resp
