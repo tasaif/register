@@ -5,9 +5,15 @@ class LineItem < ActiveRecord::Base
   def barcode
     item.barcode
   end
-  def tax
-    if item.tax
-      (Rails.application.config.sales_tax * item.price).round(2)
+  def tax_amount
+    if tax
+      if pp
+        retval = price * weight
+      else
+        retval = price
+      end
+      retval *= Rails.application.config.sales_tax
+      retval = retval.round(2)
     else
       0.0
     end
@@ -15,15 +21,21 @@ class LineItem < ActiveRecord::Base
   def price
     item.price
   end
-  def cost
-    (price + price * tax).round(2)
+  def cost(pretax=false)
+    if pp
+      retval = price * weight
+    else
+      retval = price
+    end
+    retval += tax_amount if !pretax
+    retval.round(2)
   end
 
   def barcode_pretty
     item.barcode
   end
   def tax_pretty
-    "%.2f" % tax
+    "%.2f" % tax_amount
   end
   def price_pretty
     retval = "%.2f" % price

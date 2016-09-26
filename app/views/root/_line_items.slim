@@ -1,7 +1,10 @@
 - @receipt = Receipt.new if @receipt.nil?
 form action='receipt_display' method='post'
   .header
-    | Receipt ##{@receipt.id}
+    .receipt-no
+      | Receipt ##{@receipt.id}
+    .sales-tax
+      | Sales Tax: #{Rails.application.config.sales_tax * 100}%
   input name="authenticity_token" value="#{form_authenticity_token}" hidden=true
   input name="receipt_id" value=@receipt hidden=true
   - if @receipt.nil?
@@ -31,3 +34,10 @@ form action='receipt_display' method='post'
             = line_item.weight_pretty
           span.cost
             = line_item.cost_pretty
+    .totals
+      .subtotal
+        | Subtotal
+        = @receipt.subtotal
+      .total
+        | Total
+        = @receipt.total
